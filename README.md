@@ -10,6 +10,8 @@ A sleek, user-friendly CAPTCHA implementation designed to distinguish humans fro
 
 ## 🚀 Live Demo
 
+![Image](https://i.imgur.com/ecuHxjB.gif)
+
 **[Try the CAPTCHA →](https://v0-not-a-robot-captcha.vercel.app/)**
 
 ## ✨ Features
