@@ -1,9 +1,18 @@
 "use server"
 
-// This is a simple in-memory counter that will persist until the server restarts
-let visitorCount = 0
+import { visitorService } from '@/lib/visitor-service'
+import type { VisitorStats } from '@/lib/visitor-service'
 
-export async function incrementVisitorCount() {
-  visitorCount += 1
-  return visitorCount
+/**
+ * Increment visitor count with optional request for unique visitor tracking
+ */
+export async function incrementVisitorCount(request?: Request): Promise<VisitorStats> {
+  return visitorService.incrementVisitorCount(request)
+}
+
+/**
+ * Get current visitor count statistics
+ */
+export async function getVisitorCount(): Promise<VisitorStats> {
+  return visitorService.getVisitorCount()
 }
