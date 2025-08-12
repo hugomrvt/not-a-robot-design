@@ -7,6 +7,8 @@ import ButtonHell from "./screens/button-hell"
 import ContrastTrap from "./screens/contrast-trap"
 import InputHell from "./screens/input-hell"
 import FinalScreen from "./screens/final-screen"
+
+import ModalAttack from "./screens/modal-attack"
 import { CaptchaProvider } from "./captcha-context"
 import { useKonamiCode } from "@/hooks/use-konami-code"
 import { useTheme } from "./theme-context"
@@ -21,7 +23,8 @@ export default function CaptchaChallenge() {
     <IntroScreen key="intro" onComplete={() => setCurrentStep(1)} />,
     <ButtonHell key="buttons" onComplete={() => setCurrentStep(2)} />,
     <ContrastTrap key="contrast" onComplete={() => setCurrentStep(3)} />,
-    <InputHell key="input" onComplete={() => setCurrentStep(4)} />,
+    <ModalAttack key="modal" onComplete={() => setCurrentStep(4)} />,
+    <InputHell key="input" onComplete={() => setCurrentStep(5)} />,
     <FinalScreen key="final" />,
   ]
 

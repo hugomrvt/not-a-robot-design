@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
@@ -25,38 +26,40 @@ export default function ModalAttack({ onComplete }: { onComplete: () => void }) 
     if (!inputClicked) {
       setInputClicked(true)
 
-      // Define the modals
-      const initialModals: Modal[] = [
+      // Define the modals (3x more popups)
+      const baseModals: Array<Omit<Modal, "id" | "closed"> > = [
         {
-          id: 1,
           title: "Cookie Preferences",
           content:
             "We use essential, analytical, functional and advertising cookies to give you the best experience on our site.",
           type: "cookie",
-          closed: false,
         },
         {
-          id: 2,
           title: "GDPR Compliance",
           content: "We've updated our privacy policy for the 17th time this month. Nothing important changed.",
           type: "gdpr",
-          closed: false,
         },
         {
-          id: 3,
           title: "Figma Layout Tips",
           content: "Have you tried auto-layout? It will change your life! Click here to learn more about constraints.",
           type: "figma",
-          closed: false,
         },
         {
-          id: 4,
           title: "Join Our Newsletter",
           content: "Subscribe for daily design tips that you'll immediately archive without reading!",
           type: "newsletter",
-          closed: false,
         },
       ]
+
+      const initialModals: Modal[] = Array.from({ length: 3 }).flatMap((_, multIdx) =>
+        baseModals.map((m, i) => ({
+          id: multIdx * baseModals.length + i + 1,
+          title: multIdx === 0 ? m.title : `${m.title} (${multIdx + 1})`,
+          content: m.content,
+          type: m.type,
+          closed: false,
+        })),
+      )
 
       // Add modals with slight delay between each
       initialModals.forEach((modal, index) => {
@@ -82,6 +85,18 @@ export default function ModalAttack({ onComplete }: { onComplete: () => void }) 
       }, 1000)
     }
   }, [modals, inputClicked, completeStep, onComplete])
+
+  // Handle escape key to close all modals (emergency fallback)
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && modals.some(modal => !modal.closed)) {
+        setModals((prev) => prev.map((modal) => ({ ...modal, closed: true })))
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [modals])
 
   return (
     <div className="space-y-6">
@@ -109,57 +124,60 @@ export default function ModalAttack({ onComplete }: { onComplete: () => void }) 
         )}
       </div>
 
-      {/* Modal attack */}
-      <AnimatePresence>
-        {modals.map(
-          (modal, index) =>
-            !modal.closed && (
-              <motion.div
-                key={modal.id}
-                className="fixed z-50"
-                initial={{
-                  opacity: 0,
-                  x: [100, -50, 0][index % 3],
-                  y: [-100, 50, -50][index % 3],
-                }}
-                animate={{
-                  opacity: 1,
-                  x: [20, 40, 60, 80][index % 4],
-                  y: [30, 60, 90, 120][index % 4],
-                }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                style={{
-                  top: `${20 + index * 10}%`,
-                  left: `${10 + index * 15}%`,
-                  maxWidth: "280px",
-                }}
-              >
-                <div className="bg-white rounded-lg shadow-lg border overflow-hidden">
-                  <div className="flex items-center justify-between p-3 bg-gray-50 border-b">
-                    <h3 className="text-sm font-medium">{modal.title}</h3>
-                    <Button variant="ghost" size="sm" className="h-6 w-6 p-0" onClick={() => closeModal(modal.id)}>
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <div className="p-4">
-                    <p className="text-xs text-gray-600">{modal.content}</p>
-                    <div className="mt-3 flex justify-end">
-                      <Button variant="outline" size="sm" className="text-xs h-7" onClick={() => closeModal(modal.id)}>
-                        {modal.type === "cookie"
-                          ? "Accept All"
-                          : modal.type === "gdpr"
-                            ? "I Agree"
-                            : modal.type === "figma"
-                              ? "Maybe Later"
-                              : "Subscribe"}
+      {/* Modal attack (rendered in a portal to escape clipping/overflow) */}
+      {createPortal(
+        <AnimatePresence>
+          {modals.map(
+            (modal, index) =>
+              !modal.closed && (
+                <motion.div
+                  key={modal.id}
+                  className="fixed z-50"
+                  initial={{
+                    opacity: 0,
+                    x: [100, -50, 0][index % 3],
+                    y: [-100, 50, -50][index % 3],
+                  }}
+                  animate={{
+                    opacity: 1,
+                    x: [10, 40, 70, 100][index % 4],
+                    y: [20, 50, 80, 110][index % 4],
+                  }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  style={{
+                    top: `${10 + (index % 10) * 8}%`,
+                    left: `${5 + (index % 12) * 7}%`,
+                    maxWidth: "280px",
+                  }}
+                >
+                  <div className="bg-white rounded-lg shadow-lg border overflow-hidden">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 border-b">
+                      <h3 className="text-sm font-medium">{modal.title}</h3>
+                      <Button variant="ghost" size="sm" className="h-6 w-6 p-0" onClick={() => closeModal(modal.id)}>
+                        <X className="h-4 w-4" />
                       </Button>
                     </div>
+                    <div className="p-4">
+                      <p className="text-xs text-gray-600">{modal.content}</p>
+                      <div className="mt-3 flex justify-end">
+                        <Button variant="outline" size="sm" className="text-xs h-7" onClick={() => closeModal(modal.id)}>
+                          {modal.type === "cookie"
+                            ? "Accept All"
+                            : modal.type === "gdpr"
+                              ? "I Agree"
+                              : modal.type === "figma"
+                                ? "Maybe Later"
+                                : "Subscribe"}
+                        </Button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ),
-        )}
-      </AnimatePresence>
+                </motion.div>
+              ),
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
       <p className="text-xs text-gray-500 italic text-center">
         {inputClicked ? "Close all popups to continue." : "Click the input field to start."}
