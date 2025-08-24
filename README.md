@@ -2,11 +2,13 @@
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/mrvt-projects/v0-not-a-robot-captcha) [![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/OizIny0JuGE)
 
-## Overview
+> A modern, interactive CAPTCHA implementation featuring an innovative "Not-a-robot" verification system. This project demonstrates advanced React component architecture with Next.js, providing a user-friendly alternative to traditional CAPTCHA mechanisms. Built with v0.dev's AI-assisted development platform, it showcases cutting-edge UI/UX design patterns.
 
-A modern, interactive CAPTCHA implementation featuring an innovative "Not-a-robot" verification system. This project demonstrates advanced React component architecture with Next.js, providing a user-friendly alternative to traditional CAPTCHA mechanisms. Built with v0.dev's AI-assisted development platform, it showcases cutting-edge UI/UX design patterns.
+## 📸 Screenshots
 
-## Features
+![NotARobot App Screenshot](https://i.imgur.com/rPVMihG.png)
+
+## ✨ Features
 
 - ✨ Interactive CAPTCHA challenge system
 - 🎨 Modern, responsive design with Tailwind CSS
