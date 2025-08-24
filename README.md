@@ -195,7 +195,6 @@ Contributions are welcome! This project follows standard open-source contributio
 ### Contributors
 
 - **[v0[bot]](https://github.com/apps/v0)** - AI-assisted development contributions
-- **Hugo Mourlevat** - Primary development and maintenance
 
 ### Acknowledgements
 
@@ -212,8 +211,7 @@ This project is open source and available under standard terms. Please refer to 
 
 **Project Links:**
 - 🌐 [Live Demo](https://v0-not-a-robot-captcha.vercel.app)
-- 🛠️ [v0.dev Project](https://v0.dev/chat/projects/OizIny0JuGE)
 - 📊 [Vercel Dashboard](https://vercel.com/mrvt-projects/v0-not-a-robot-captcha)
 - 👨‍💻 [Author Profile](https://github.com/hugomrvt)
 
-*Built with ❤️ using v0.dev and modern web technologies*
+*Built with ❤️ using v0.dev by [Hugo Mourlevat](https://github.com/hugomrvt)
